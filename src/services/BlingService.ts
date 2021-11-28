@@ -3,6 +3,7 @@ import Order from '../interfaces/order';
 import utils from '../utils/';
 import Deal from '../interfaces/deal';
 import axios from 'axios';
+import Product from '../interfaces/product';
 
 const apiPostPedido = 'https://bling.com.br/Api/v2/pedido/json/';
 const apiPostProduct = 'https://bling.com.br/Api/v2/produto/json/';
@@ -42,7 +43,20 @@ class BlingService {
       },
     );
 
-    return product;
+    const response = [...product.data.retorno.produtos];
+
+    const responseProduct: Array<Product> = [];
+
+    response.map((product) => {
+      responseProduct.push({
+        codigo: product.produto.codigo,
+        descricao: product.produto.descricao,
+        situacao: product.produto.situacao,
+        preco: product.produto.preco,
+      });
+    });
+
+    return responseProduct;
   }
 
   async getOrders() {
