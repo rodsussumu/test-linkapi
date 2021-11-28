@@ -4,18 +4,19 @@ import utils from '../utils/';
 import Deal from '../interfaces/deal';
 import axios from 'axios';
 
-const apiURL = 'https://bling.com.br/Api/v2/pedido/json/';
-const apiProducts = 'https://bling.com.br/Api/v2/produto/json/';
+const apiPostPedido = 'https://bling.com.br/Api/v2/pedido/json/';
+const apiPostProduct = 'https://bling.com.br/Api/v2/produto/json/';
+const apiGetPedidos = 'https://bling.com.br/Api/v2/pedidos/json/';
 
 class BlingService {
-  async createOrder() {
+  async createOrder(): Promise<Deal[]> {
     const pipedriveService = new PipedriveService();
     const dealsWon = await pipedriveService.getDeals();
 
     dealsWon.map(async (deal: Deal) => {
       const xml = utils.transformXml(deal);
       await axios.post(
-        apiURL,
+        apiPostPedido,
         {},
         {
           params: {
@@ -26,12 +27,12 @@ class BlingService {
       );
     });
 
-    return { status: 200, message: 'Success', ordersCreated: dealsWon };
+    return dealsWon;
   }
 
   async createProduct() {
     const product = await axios.post(
-      apiProducts,
+      apiPostProduct,
       {},
       {
         params: {
@@ -41,7 +42,17 @@ class BlingService {
       },
     );
 
-    return { status: 200, message: product.data };
+    return product;
+  }
+
+  async getOrders() {
+    const orders = await axios.get(apiGetPedidos, {
+      params: {
+        apikey: process.env.BLING_TOKEN,
+      },
+    });
+
+    return orders.data.retorno;
   }
 }
 
