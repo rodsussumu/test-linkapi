@@ -1,6 +1,7 @@
 import { CronJob } from 'cron';
 import TotalService from '../services/TotalService';
 
+/// Job para adicionar todos os orders ao completar 00:00:00(adiciona os jobs do dia anterior)
 class TotalJob {
   cronJob: CronJob;
 
