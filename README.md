@@ -23,6 +23,14 @@ git clone https://github.com/rodsussumu/test-linkapi.git
 npm install
 ```
 
+## Crie o arquivo .env seguindo o .env.example
+
+```
+PIPEDRIVE_TOKEN=''
+BLING_TOKEN=''
+MONGODB_URL=''
+```
+
 ## Executando projeto
 
 ```
