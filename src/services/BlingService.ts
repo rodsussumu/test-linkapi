@@ -60,9 +60,16 @@ class BlingService {
   }
 
   async getOrders() {
+    const date = new Date();
+    const dataEmissao = new Date();
+    dataEmissao.setDate(dataEmissao.getDate() - 1);
+
     const orders = await axios.get(apiGetPedidos, {
       params: {
         apikey: process.env.BLING_TOKEN,
+        filters: `dataEmissao[${dataEmissao.toLocaleDateString(
+          'pt-BR',
+        )} TO ${dataEmissao.toLocaleDateString('pt-BR')}]`,
       },
     });
 
